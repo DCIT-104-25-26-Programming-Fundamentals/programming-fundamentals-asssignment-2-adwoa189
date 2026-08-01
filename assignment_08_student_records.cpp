@@ -83,3 +83,145 @@
 #include <iomanip>
 using namespace std;
 
+// Struct to represent a student record
+struct Student {
+    string name;
+    int id;
+    vector<double> scores;
+};
+
+// Function to calculate average score
+double calculateAverage(const vector<double> &scores) {
+    if (scores.empty()) return 0.0;
+    
+    double sum = 0;
+    for (double score : scores) {
+        sum += score;
+    }
+    return sum / scores.size();
+}
+
+// Function to display the menu
+void displayMenu() {
+    cout << "\n================================" << endl;
+    cout << "   STUDENT RECORD SYSTEM MENU" << endl;
+    cout << "================================" << endl;
+    cout << "1. Add student" << endl;
+    cout << "2. Display all students" << endl;
+    cout << "3. Calculate average score" << endl;
+    cout << "4. Quit" << endl;
+    cout << "Enter your choice (1-4): ";
+}
+
+// Function to add a student record
+void addStudent(vector<Student> &students) {
+    Student newStudent;
+    
+    cout << "Student name: ";
+    cin.ignore();  // Clear the newline from previous input
+    getline(cin, newStudent.name);
+    
+    cout << "Student ID: ";
+    cin >> newStudent.id;
+    
+    int numScores;
+    cout << "How many scores? ";
+    cin >> numScores;
+    
+    if (numScores <= 0) {
+        cout << "Error: Number of scores must be positive." << endl;
+        return;
+    }
+    
+    // Read each score
+    for (int i = 1; i <= numScores; i++) {
+        double score;
+        cout << "Enter score " << i << ": ";
+        cin >> score;
+        newStudent.scores.push_back(score);
+    }
+    
+    students.push_back(newStudent);
+    cout << "Student \"" << newStudent.name << "\" added successfully." << endl;
+}
+
+// Function to display all students
+void displayAllStudents(const vector<Student> &students) {
+    if (students.empty()) {
+        cout << "No students in the system yet." << endl;
+        return;
+    }
+    
+    cout << "\n" << setw(20) << "Name" << setw(12) << "ID" 
+         << setw(15) << "Scores" << setw(12) << "Average" << endl;
+    cout << string(59, '-') << endl;
+    
+    for (const Student &student : students) {
+        cout << setw(20) << student.name << setw(12) << student.id;
+        
+        // Print all scores
+        cout << "  ";
+        for (size_t i = 0; i < student.scores.size(); i++) {
+            if (i > 0) cout << ", ";
+            cout << fixed << setprecision(1) << student.scores[i];
+        }
+        
+        // Print average
+        double avg = calculateAverage(student.scores);
+        cout << setw(12) << fixed << setprecision(2) << avg << endl;
+    }
+}
+
+// Function to calculate and display average for a specific student
+void getStudentAverage(const vector<Student> &students) {
+    int searchID;
+    cout << "Enter student ID: ";
+    cin >> searchID;
+    
+    // Search for the student
+    for (const Student &student : students) {
+        if (student.id == searchID) {
+            double avg = calculateAverage(student.scores);
+            cout << student.name << "'s average score: " 
+                 << fixed << setprecision(2) << avg << endl;
+            return;
+        }
+    }
+    
+    cout << "Error: Student with ID " << searchID << " not found." << endl;
+}
+
+int main() {
+    vector<Student> students;
+    int choice;
+    bool running = true;
+    
+    cout << "========== WELCOME ==========" << endl;
+    cout << "Welcome to Student Record System!" << endl;
+    
+    while (running) {
+        displayMenu();
+        cin >> choice;
+        
+        switch (choice) {
+            case 1:
+                addStudent(students);
+                break;
+            case 2:
+                displayAllStudents(students);
+                break;
+            case 3:
+                getStudentAverage(students);
+                break;
+            case 4:
+                cout << "Goodbye!" << endl;
+                running = false;
+                break;
+            default:
+                cout << "Error: Invalid choice. Please enter 1-4." << endl;
+        }
+    }
+    
+    return 0;
+}
+

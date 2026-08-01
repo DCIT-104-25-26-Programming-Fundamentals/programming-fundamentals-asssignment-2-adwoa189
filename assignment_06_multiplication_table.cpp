@@ -57,3 +57,72 @@
 #include <iostream>
 using namespace std;
 
+// PART A: Print multiplication table for a single number
+void printSingleTable(int num) {
+    // Validate input
+    if (num <= 0) {
+        cout << "Error: Number must be positive." << endl;
+        return;
+    }
+    
+    cout << "\nMultiplication Table for " << num << ":" << endl;
+    
+    // Loop from 1 to 12
+    for (int i = 1; i <= 12; i++) {
+        cout << num << "  x  " << i << "  =  " << (num * i) << endl;
+    }
+}
+
+// PART B: Print multiplication tables from 1 to N
+void printMultipleTables(int n) {
+    // Validate input
+    if (n <= 0) {
+        cout << "Error: Number must be positive." << endl;
+        return;
+    }
+    
+    // Loop through each number from 1 to N
+    for (int num = 1; num <= n; num++) {
+        cout << "\nMultiplication Table for " << num << ":" << endl;
+        
+        // Inner loop for multiplication from 1 to 12
+        for (int i = 1; i <= 12; i++) {
+            cout << num << "  x  " << i << "  =  " << (num * i) << endl;
+        }
+        
+        // Print separator line between tables (except after the last one)
+        if (num < n) {
+            cout << "---------------------------" << endl;
+        }
+    }
+}
+
+int main() {
+    int choice;
+    int num;
+    
+    cout << "=== Multiplication Table Generator ===" << endl;
+    cout << "1. Single multiplication table" << endl;
+    cout << "2. Multiple tables (1 to N)" << endl;
+    cout << "Choose option (1 or 2): ";
+    cin >> choice;
+    
+    if (choice == 1) {
+        // PART A
+        cout << "Enter a number: ";
+        cin >> num;
+        printSingleTable(num);
+        
+    } else if (choice == 2) {
+        // PART B
+        cout << "Enter N (highest number): ";
+        cin >> num;
+        printMultipleTables(num);
+        
+    } else {
+        cout << "Invalid choice!" << endl;
+    }
+    
+    return 0;
+}
+
